@@ -1,16 +1,20 @@
 import numpy as np
+from player import *
 
 class ticTacToe:
 	"""
 		Represents the game tic tac toe
 	"""
 
-	def __init__(self, size = 3):
+	def __init__(self, size = 3, player1 = Human(), player2 = Human()):
 		"""
 			Size of the board is the square
 		"""
 		self.size = size
 		self.board = np.zeros((size,size))
+
+		# Take the two players which can be
+		self.players = {-1:player1, 1:player2}
 
 	def alignment(self):
 		"""
@@ -55,10 +59,6 @@ class ticTacToe:
 			print("\nChoose a position as follow : \n{}".format(np.arange(1,self.size**2 + 1).reshape((self.size,self.size))))
 		else:
 			print("Bad move, try another one!")
-		try:
-			return int(input())
-		except Exception as e:
-			return -1
 
 	def printBoard(self):
 		"""
@@ -70,20 +70,21 @@ class ticTacToe:
 		"""
 			Create the full game until victory of a player
 		"""
-		player = 1
+		playerId = 1
 		while(not self.alignment() and np.sum(abs(self.board)) != self.size**2):
-			player *= -1
+			playerId *= -1
 			choice = -1
 			display = True
 			while not self.acceptableChoice(choice):
-				choice = self.askMove(display)
+				self.askMove(display)
+				choice = self.players[playerId].getMove(self.board)
 				display = False
-			self.board[self.mapPosition(choice)] = player
+			self.board[self.mapPosition(choice)] = playerId
 			self.printBoard()
 
 		if self.alignment():
-			print("Player {} wins the game !".format(player))
-			return player
+			print("Player {} wins the game !".format(playerId))
+			return playerId
 		else :
 			print("Draw")
 			return 0
