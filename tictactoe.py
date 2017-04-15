@@ -1,73 +1,93 @@
 import numpy as np
 
-def threeAlign(board):
+class ticTacToe:
 	"""
-	Returns True if the last move allows the player to win
-			False otherwise
+		Represents the game tic tac toe
 	"""
-	# Diagonals
-	if abs(board.trace()) == 3:
-		return True
-	if abs(np.fliplr(board).trace()) == 3:
-		return True
 
-	# Rows
-	if 3 in abs(np.sum(board, axis=1)):
-		return True
+	def __init__(self, size = 3):
+		"""
+			Size of the board is the square
+		"""
+		self.size = size
+		self.board = np.zeros((size,size))
 
-	# Columns
-	if 3 in abs(np.sum(board, axis=0)):
-		return True
+	def alignment(self):
+		"""
+			Returns if there is size of the same player is aligned
+		"""
+		# Diagonals
+		if abs(self.board.trace()) == self.size:
+			return True
+		if abs(np.fliplr(self.board).trace()) == self.size:
+			return True
 
-	return False
+		# Rows
+		if self.size in abs(np.sum(self.board, axis=1)):
+			return True
 
-def mapPosition(choice):
-	"""
-	Transforms the choice into a position tuple
-	"""
-	return (int((choice-1)/3), (choice-1)%3)
+		# Columns
+		if self.size in abs(np.sum(self.board, axis=0)):
+			return True
 
-def acceptableChoice(board, choice):
-	"""
-	Returns True iif the choice is possible
-	"""
-	if choice < 1 or choice > 9 or board[mapPosition(choice)] != 0:
 		return False
-	else:
-		return True
 
-def play(display):
-	"""
-	Asks the player to give a number between 1 and 9
-	"""
-	if display:
-		print("\nChoose a position as follow : \n{}".format(np.arange(1,10).reshape((3,3))))
-	else:
-		print("Bad move, try another one!")
-	try:
-		return int(input())
-	except Exception as e:
-		return -1
+	def mapPosition(self, choice):
+		"""
+			Transforms the choice into a position tuple
+		"""
+		return (int((choice-1)/self.size), (choice-1)%self.size)
 
-def ticTacToe():
-	player = 1
-	board = np.zeros((3,3))
-	while(not threeAlign(board) and np.sum(abs(board)) != 9):
-		player *= -1
-		choice = -1
-		display = True
-		while not acceptableChoice(board, choice):
-			choice = play(display)
-			display = False
-		board[mapPosition(choice)] = player
-		print(board)
+	def acceptableChoice(self, choice):
+		"""
+			Returns True iif the choice is possible
+		"""
+		if choice < 1 or choice > self.size**2 or self.board[self.mapPosition(choice)] != 0:
+			return False
+		else:
+			return True
 
-	if threeAlign(board):
-		print("Player {} wins the game !".format(player))
-		return player
-	else :
-		print("Draw")
-		return 0
+	def askMove(self, display):
+		"""
+			Asks the player to give a number between 1 and 9
+		"""
+		if display:
+			print("\nChoose a position as follow : \n{}".format(np.arange(1,self.size**2 + 1).reshape((self.size,self.size))))
+		else:
+			print("Bad move, try another one!")
+		try:
+			return int(input())
+		except Exception as e:
+			return -1
+
+	def printBoard(self):
+		"""
+			Prints the boards
+		"""
+		print(self.board)
+
+	def play(self):
+		"""
+			Create the full game until victory of a player
+		"""
+		player = 1
+		while(not self.alignment() and np.sum(abs(self.board)) != self.size**2):
+			player *= -1
+			choice = -1
+			display = True
+			while not self.acceptableChoice(choice):
+				choice = self.askMove(display)
+				display = False
+			self.board[self.mapPosition(choice)] = player
+			self.printBoard()
+
+		if self.alignment():
+			print("Player {} wins the game !".format(player))
+			return player
+		else :
+			print("Draw")
+			return 0
 
 if __name__ == '__main__':
-	ticTacToe()
+	game = ticTacToe(5)
+	game.play()
