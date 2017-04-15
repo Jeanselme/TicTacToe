@@ -24,3 +24,14 @@ class Human(Player):
             return int(input())
         except:
             return -1
+            
+class Random(Player):
+    """
+        Represents a random player
+    """
+
+    def getMove(self, board):
+        """
+            Returns a random number in the board
+        """
+        return np.random.randint(np.prod(board.shape))
