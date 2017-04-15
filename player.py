@@ -24,7 +24,7 @@ class Human(Player):
             return int(input())
         except:
             return -1
-            
+
 class Random(Player):
     """
         Represents a random player
@@ -34,4 +34,4 @@ class Random(Player):
         """
             Returns a random number in the board
         """
-        return np.random.randint(np.prod(board.shape))
+        return np.random.randint(1, np.prod(board.shape)+1)
