@@ -35,3 +35,17 @@ class Random(Player):
             Returns a random number in the board
         """
         return np.random.randint(1, np.prod(board.shape)+1)
+
+class RandomAdvanced(Player):
+    """
+        Represents a random player which does not try non empty cell
+    """
+
+    def getMove(self, board):
+        """
+            Returns a random number in the board
+        """
+        indexes = np.array(list(range(np.prod(board.shape))))
+        indexes = indexes[[board.flatten() == 0]]
+        indexes += 1
+        return np.random.choice(indexes)
