@@ -1,12 +1,11 @@
 import numpy as np
-from player import *
 
 class ticTacToe:
 	"""
 		Represents the game tic tac toe
 	"""
 
-	def __init__(self, size = 3, player1 = Human(), player2 = Human()):
+	def __init__(self, player1, player2, size = 3):
 		"""
 			Size of the board is the square
 		"""
@@ -88,7 +87,3 @@ class ticTacToe:
 		else :
 			print("Draw")
 			return 0
-
-if __name__ == '__main__':
-	game = ticTacToe(5)
-	game.play()
