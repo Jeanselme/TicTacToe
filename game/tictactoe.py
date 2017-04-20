@@ -14,6 +14,18 @@ class ticTacToe:
 
 		# Take the two players which can be
 		self.players = {-1:player1, 1:player2}
+		# Player which have to play
+		self.playerId = -1
+
+	def copy(self):
+		"""
+			Creates the copy of the current game
+		"""
+		copy = ticTacToe(None, None, self.size)
+		copy.board = self.board.copy()
+		copy.players = self.players
+		copy.playerId = self.playerId
+		return copy
 
 	def alignment(self):
 		"""
@@ -34,6 +46,12 @@ class ticTacToe:
 			return True
 
 		return False
+
+	def endGame(self):
+		"""
+			Returns True if the game is ended
+		"""
+		return self.alignment() or np.sum(abs(self.board)) == self.size**2
 
 	def mapPosition(self, choice):
 		"""
@@ -65,25 +83,33 @@ class ticTacToe:
 		"""
 		print(self.board)
 
-	def play(self):
+	def play(self, position):
+		"""
+			Apply the move of the current player at the given position
+			Change the current player
+			The move has to be verified with acceptable choice
+		"""
+		self.board[self.mapPosition(position)] = self.playerId
+		self.playerId *= -1
+
+	def playGame(self):
 		"""
 			Create the full game until victory of a player
 		"""
-		playerId = 1
-		while(not self.alignment() and np.sum(abs(self.board)) != self.size**2):
-			playerId *= -1
+		while not(self.endGame()):
 			choice = -1
 			display = True
 			while not self.acceptableChoice(choice):
 				self.askMove(display)
-				choice = self.players[playerId].getMove(self.board)
+				choice = self.players[self.playerId].getMove(self.board)
 				display = False
-			self.board[self.mapPosition(choice)] = playerId
+			self.play(choice)
 			self.printBoard()
 
 		if self.alignment():
-			print("Player {} wins the game !".format(playerId))
-			return playerId
+			# Minus the current player because of self.play
+			print("Player {} wins the game !".format(-self.playerId))
+			return -self.playerId
 		else :
 			print("Draw")
 			return 0
