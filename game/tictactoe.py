@@ -5,12 +5,13 @@ class ticTacToe:
 		Represents the game tic tac toe
 	"""
 
-	def __init__(self, player1, player2, size = 3):
+	def __init__(self, player1, player2, size = 3, display = True):
 		"""
 			Size of the board is the square
 		"""
 		self.size = size
 		self.board = np.zeros((size,size))
+		self.display = display
 
 		# Take the two players which can be
 		self.players = {-1:player1, 1:player2}
@@ -26,6 +27,13 @@ class ticTacToe:
 		copy.players = self.players
 		copy.playerId = self.playerId
 		return copy
+
+	def printScreen(self, obj):
+		"""
+			Print the given obj at the screen iff self.display
+		"""
+		if self.display:
+			print(obj)
 
 	def alignment(self):
 		"""
@@ -73,15 +81,15 @@ class ticTacToe:
 			Asks the player to give a number between 1 and 9
 		"""
 		if display:
-			print("\nChoose a position as follow : \n{}".format(np.arange(1,self.size**2 + 1).reshape((self.size,self.size))))
+			self.printScreen("\nChoose a position as follow : \n{}".format(np.arange(1,self.size**2 + 1).reshape((self.size,self.size))))
 		else:
-			print("Bad move, try another one!")
+			self.printScreen("Bad move, try another one!")
 
 	def printBoard(self):
 		"""
 			Prints the boards
 		"""
-		print(self.board)
+		self.printScreen(self.board)
 
 	def play(self, position):
 		"""
@@ -108,8 +116,8 @@ class ticTacToe:
 
 		if self.alignment():
 			# Minus the current player because of self.play
-			print("Player {} wins the game !".format(-self.playerId))
+			self.printScreen("Player {} wins the game !".format(-self.playerId))
 			return -self.playerId
 		else :
-			print("Draw")
+			self.printScreen("Draw")
 			return 0
