@@ -53,7 +53,7 @@ Here are some interesting results:
 	- The total number of totally different states of this game is 764.
 	-	There are 138 ends possible for this game.
 	-	The number of possible different state by depth in the tree increases until the 6th round of the game.
-	-	The average length of a game is : (var : )
+	-	The average length of a game is : 6.93
 
 That is all for this pre analysis ! This vision of the game is really simple because in fact no gamer will play randomly, you have to think that your enemy wants to maximize its gain. Next step : Min Max Algorithm !
 
